@@ -3,6 +3,9 @@ class Doodle {
 
    field int x, y; // screen location of the square's top-left corner
    field int size; // length of this square, in pixels
+   field int horizontalSplit;
+   field int verticalSplit;
+   
 
    /** Constructs a new square with a given location and size. */
    constructor Doodle new(int Ax, int Ay, int Asize) {
@@ -19,17 +22,35 @@ class Doodle {
       return;
    }
 
+   method void spriteFrame() {
+      var int i;
+      if (horizontalSplit < 0) {
+         return;
+      }
+      if (y + size > 255) {
+         let horizontalSplit = 255 - y;
+      } else {
+         let horizontalSplit = size + 1;
+      }
+      let i = 0;
+      while (i < horizontalSplit) {
+         do Screen.drawLine(x, y + i, x + size, y + i);
+         let i = i + 1;
+      }
+      return;
+   }
+
    /** Draws the square on the screen. */
    method void draw() {
       do Screen.setColor(true);
-      do Screen.drawRectangle(x, y, x + size, y + size);
+      do spriteFrame();
       return;
    }
 
    /** Erases the square from the screen. */
    method void erase() {
       do Screen.setColor(false);
-      do Screen.drawRectangle(x, y, x + size, y + size);
+      do spriteFrame();
       return;
    }
 
@@ -39,20 +60,17 @@ class Doodle {
       let y = y - velocity;
       do draw();
       /**
-      do Screen.setColor(false);
-      do Screen.drawRectangle(x, y + size - velocity + 1, x + size, y + size);
-      let y = y - velocity;
-      do Screen.setColor(true);
-      do Screen.drawRectangle(x, y, x + size, y + velocity - 1);
+         do Screen.setColor(false);
+         do Screen.drawRectangle(x, y + size - velocity + 1, x + size, y + size);
+         let y = y - velocity;
+         do Screen.setColor(true);
+         do Screen.drawRectangle(x, y, x + size, y + velocity - 1);
       */
       return;
    }
 
    /** Moves the square down by v pixels (v is negative) */
    method void moveDown(int velocity) {
-      if ((y + size - velocity) > 255) {  // Check for lower bound
-         let velocity = (y + size) - 255;
-      }
       if (velocity = 0) {
          return;
       }
@@ -60,11 +78,11 @@ class Doodle {
       let y = y - velocity;
       do draw();
       /**
-      do Screen.setColor(false);
-      do Screen.drawRectangle(x, y, x + size, y - velocity - 1);
-      let y = y - velocity;
-      do Screen.setColor(true);
-      do Screen.drawRectangle(x, y + size - 1 + velocity, x + size, y + size - 1);
+         do Screen.setColor(false);
+         do Screen.drawRectangle(x, y, x + size, y - velocity - 1);
+         let y = y - velocity;
+         do Screen.setColor(true);
+         do Screen.drawRectangle(x, y + size - 1 + velocity, x + size, y + size - 1);
       */
       return;
    }

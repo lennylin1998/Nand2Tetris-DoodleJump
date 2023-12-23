@@ -8,21 +8,21 @@ class PlatformManager {
         var int i;
         let i = 0;
         let platforms = Array.new(10);
-        let nextPosition = 201;
+        let nextPosition = 245;
         while (i < 10) {
             let platforms[i] = -1;
             let i = i + 1;
         }
-        do generatePlatform();
+        do generateRandomPlatform();
         
         return this;
     }
 
-    method void generatePlatform() {
-        while (nextPosition > 75) {
+    method void generateRandomPlatform() {
+        while (nextPosition > 13) {
             let platformIndex = updatePlatformIndex(platformIndex);
-            let platforms[platformIndex] = Platform.new(456, nextPosition);
-            let nextPosition = nextPosition - 75;
+            let platforms[platformIndex] = Platform.new(LCGRandom.randRange(258, 469), nextPosition);
+            let nextPosition = nextPosition - LCGRandom.randRange(10, 100); 
         }
         return;
     }

@@ -7,7 +7,7 @@ pop local 0
 push constant 10
 call Array.new 1
 pop this 0
-push constant 201
+push constant 245
 pop this 1
 label WHILE_EXP0
 push local 0
@@ -31,16 +31,16 @@ pop local 0
 goto WHILE_EXP0
 label WHILE_END0
 push pointer 0
-call PlatformManager.generatePlatform 1
+call PlatformManager.generateRandomPlatform 1
 pop temp 0
 push pointer 0
 return
-function PlatformManager.generatePlatform 0
+function PlatformManager.generateRandomPlatform 0
 push argument 0
 pop pointer 0
 label WHILE_EXP0
 push this 1
-push constant 75
+push constant 13
 gt
 not
 if-goto WHILE_END0
@@ -51,7 +51,9 @@ pop this 2
 push this 2
 push this 0
 add
-push constant 456
+push constant 258
+push constant 469
+call LCGRandom.randRange 2
 push this 1
 call Platform.new 2
 pop temp 0
@@ -59,7 +61,9 @@ pop pointer 1
 push temp 0
 pop that 0
 push this 1
-push constant 75
+push constant 10
+push constant 100
+call LCGRandom.randRange 2
 sub
 pop this 1
 goto WHILE_EXP0
