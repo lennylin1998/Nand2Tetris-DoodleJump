@@ -1,0 +1,109 @@
+/** Implements a graphical Platform. */
+class Platform {
+
+   field int x, y; // screen location of the square's top-left corner
+   field boolean collide; // if the platform collide with the doodle
+   field boolean needReconstruct;  // if the platform need reconstruct
+   field Array surface;
+   /** Constructs a new square with a given location and size. */
+   constructor Platform new(int Ax, int Ay) {
+      let x = Ax;
+      let y = Ay;
+      let needReconstruct = false;
+      do draw();
+      return this;
+   }
+
+   /** Disposes this square. */
+   method void dispose() {
+      do Memory.deAlloc(this);
+      return;
+   }
+
+   /** Draws the square on the screen. */
+   method void draw() {
+      do Screen.setColor(true);
+      do Screen.drawRectangle(x, y, x + 40, y + 3);
+      return;
+   }
+
+   /** Erase the square from the screen. */
+   method void erase() {
+      do Screen.setColor(false);
+      do Screen.drawRectangle(x, y, x + 40, y + 3);
+      return;
+   }
+
+   // Check if doodle overlaied with any platform
+   method boolean checkCollide(int doodleLeft, int doodleRight, int doodleTop, int doodleBottom) {
+      var int diffX1;
+      var int diffX2;
+      var int diffX;
+      var int diffY1;
+      var int diffY2;
+      var int diffY;
+
+      let diffX1 = x + 40 - doodleLeft + 1;
+      let diffX2 = doodleRight - x + 1;
+      let diffX = Math.max(diffX1, diffX2);
+      let diffY1 = y + 3 - doodleTop + 1;
+      let diffY2 = doodleBottom - y + 1;
+      let diffY = Math.max(diffY1, diffY2);
+
+      if ((diffX < (doodleRight - doodleLeft + 1 + 41)) & (diffY < (doodleBottom - doodleTop + 1 + 4))) {
+         let collide = true;
+         return true;
+      }
+      let collide = false;
+      return false;
+   }
+
+   // Check the next frame to see if doodle is about to land on any platform
+   method boolean checkContact(int nextDoodleLeft, int nextDoodleRight, int nextDoodleTop, int nextDoodleBottom) {
+      if (collide) {
+         return false;
+      }
+      if (checkCollide(nextDoodleLeft, nextDoodleRight, nextDoodleTop, nextDoodleBottom)) {
+         return true;
+      }
+      return false;
+   }
+
+   method void setReconstruct() {
+      let needReconstruct = true;
+      return;
+   }
+
+   method void resetReconstruct() {
+      let needReconstruct = false;
+      return;
+   }
+
+   method void reconstruct(boolean collide) {
+      if (collide) {
+         do draw();
+         do setReconstruct();
+         return;
+      }
+      if (needReconstruct) {
+         do draw();
+         do resetReconstruct();
+      }
+      return;
+   }
+
+   method int getSurface() {
+      return y;
+   }
+
+   /** Move down the platform by downward velocity(score) */
+   method boolean moveDown(int downVelocity) {
+      do erase();
+      let y = y - downVelocity;
+      if ((y + 3) > 255) {
+         return false;
+      }
+      do draw();
+      return true;
+   }
+}

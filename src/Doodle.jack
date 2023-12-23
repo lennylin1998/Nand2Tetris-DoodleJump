@@ -1,0 +1,123 @@
+/** Implements a graphical Doodle. */
+class Doodle {
+
+   field int x, y; // screen location of the square's top-left corner
+   field int size; // length of this square, in pixels
+
+   /** Constructs a new square with a given location and size. */
+   constructor Doodle new(int Ax, int Ay, int Asize) {
+      let x = Ax;
+      let y = Ay;
+      let size = Asize;
+      do draw();
+      return this;
+   }
+
+   /** Disposes this square. */
+   method void dispose() {
+      do Memory.deAlloc(this);
+      return;
+   }
+
+   /** Draws the square on the screen. */
+   method void draw() {
+      do Screen.setColor(true);
+      do Screen.drawRectangle(x, y, x + size, y + size);
+      return;
+   }
+
+   /** Erases the square from the screen. */
+   method void erase() {
+      do Screen.setColor(false);
+      do Screen.drawRectangle(x, y, x + size, y + size);
+      return;
+   }
+
+   /** Moves the square up by v pixels. */
+   method void moveUp(int velocity) {
+      do erase();
+      let y = y - velocity;
+      do draw();
+      /**
+      do Screen.setColor(false);
+      do Screen.drawRectangle(x, y + size - velocity + 1, x + size, y + size);
+      let y = y - velocity;
+      do Screen.setColor(true);
+      do Screen.drawRectangle(x, y, x + size, y + velocity - 1);
+      */
+      return;
+   }
+
+   /** Moves the square down by v pixels (v is negative) */
+   method void moveDown(int velocity) {
+      if ((y + size - velocity) > 255) {  // Check for lower bound
+         let velocity = (y + size) - 255;
+      }
+      if (velocity = 0) {
+         return;
+      }
+      do erase();
+      let y = y - velocity;
+      do draw();
+      /**
+      do Screen.setColor(false);
+      do Screen.drawRectangle(x, y, x + size, y - velocity - 1);
+      let y = y - velocity;
+      do Screen.setColor(true);
+      do Screen.drawRectangle(x, y + size - 1 + velocity, x + size, y + size - 1);
+      */
+      return;
+   }
+
+   /** Moves the square up by v pixels. */
+   method void moveLeft(int speed) {
+      if (speed = 0) {
+         return;
+      }
+      do erase();
+      let x = x + speed;
+      do draw();
+      /**
+      do Screen.setColor(false);
+      do Screen.drawRectangle(x + size - 1 + speed, y, x + size, y + size);
+      let x = x + speed ;
+      do Screen.setColor(true);
+      do Screen.drawRectangle(x, y, x - speed - 1, y + size);
+      */
+      return;
+   }
+
+   /** Moves the square up by v pixels. */
+   method void moveRight(int speed) {
+      if (speed = 0) {
+         return;
+      }
+      do erase();
+      let x = x + speed;
+      do draw();
+      /**
+      do Screen.setColor(false);
+      do Screen.drawRectangle(x, y, x + speed - 1, y + size);
+      let x = x + speed;
+      do Screen.setColor(true);
+      do Screen.drawRectangle(x - speed + size, y, x + size - 1, y + size);
+      */
+      return;
+   }
+   
+   method int getDoodleRight() {
+      return x + size;
+   }
+
+   method int getDoodleLeft() {
+      return x;
+   }
+
+   method int getDoodleTop() {
+      return y;
+   }
+
+   method int getDoodleBottom() {
+      return y + size;
+   }
+}

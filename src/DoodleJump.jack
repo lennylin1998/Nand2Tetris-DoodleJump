@@ -1,0 +1,179 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/09/Doodle/DoodleJump.jack
+class DoodleJump {
+   field int maxHeight;
+
+   field Doodle doodle; // the doodle of this game
+
+   field int velocity; // the doodle's current velocity
+   field int speed;  // the doodle's left/right speed
+
+   field PlatformManager platformManager;
+
+   field int downVelocity;
+
+   field int score;
+
+   /** Constructs a new Doodle Game. */
+   constructor DoodleJump new() {
+      // Set max height to 55
+      let maxHeight = 55;
+      // Creates a 31 by 31 pixels doodle
+      let doodle = Doodle.new(256, 100, 30);
+      let platformManager = PlatformManager.new();
+
+      let velocity = -5;
+      let score = 0;
+
+      return this;
+   }
+
+   /** Disposes this game. */
+   method void dispose() {
+      do doodle.dispose();
+      do Memory.deAlloc(this);
+      return;
+   }
+
+   // Update score and return height(negative speed for platforms to moveDown)
+   method int updateScore() {
+      var int doodleTop;
+      let doodleTop = doodle.getDoodleTop();
+      if (doodleTop < maxHeight) {
+         return doodleTop - maxHeight;
+      }
+      return 0;
+   }
+
+   method void movePlatforms() {
+      // if downward velocity is not 0, move the platforms down first and update scores
+      if (downVelocity < 0) {
+         do platformManager.moveDownPlatforms(downVelocity);
+         let score = score - downVelocity;
+         let downVelocity = downVelocity + 1;
+      }
+      return;
+   }
+
+   /** Moves the doodle in the current velocity. */
+   method void moveDoodle() {
+      // move doodle up by velocity subtract(add) downward velocity
+      if (velocity > 0) {
+         do doodle.moveUp(velocity + downVelocity);
+      }
+      // if velocity is negative, move doodle down
+      if (velocity < 0) {
+         do doodle.moveDown(velocity);
+      }
+      let velocity = velocity - 1;
+      if (downVelocity < 0) {    // Update the velocity to 0 (make doodle still) AFTER the doodle moves up, when there is downward velocity
+         let velocity = 0;
+      }
+      if (speed > 0) {
+         do doodle.moveRight(speed);
+      }
+      if (speed < 0) {
+         do doodle.moveLeft(speed);
+      }
+      // Increase right/left speed
+      do updateSpeed();
+      return;
+   }
+
+   method int initDownVelocity() {
+      if (downVelocity = 0) {
+         if ((doodle.getDoodleTop() - velocity) < maxHeight) {
+            return -velocity;
+         }
+      }
+      return downVelocity;
+   }
+
+   method void updateSpeed() {
+      var char key;  // the key currently pressed by the user
+      let key = Keyboard.keyPressed();
+      if (key = 0) {
+         let speed = 0;
+         return;
+      }
+      if ((key = 130) & (speed > -8)) {  // left
+         let speed = speed - 2;
+      }
+      if ((key = 132) & (speed < 8)) {  // right
+         let speed = speed + 2;
+      }
+      return;
+   }
+
+   // Adjust speed when reach left bound or right bound so that memory address would always be valid
+   // Note here we only check the speed because velocity is closely related to contact/collision, therefore it would be processed elsewhere
+   method void adJustSpeed() {
+      if ((doodle.getDoodleLeft() + speed) < 0) {
+         let speed = -doodle.getDoodleLeft();
+         return;
+      }
+      if ((doodle.getDoodleRight() + speed) > 511) {
+         let speed = 511 - doodle.getDoodleRight();
+      }
+      return;
+   }
+
+   // Check if doodle can land on any surface (platform or land), and adjust the velocity
+   method boolean canLand() {
+      var int nextSurfaceToLand;
+
+      let nextSurfaceToLand = platformManager.platformToLand(doodle.getDoodleLeft() + speed, doodle.getDoodleRight() + speed, doodle.getDoodleTop() - velocity, doodle.getDoodleBottom() - velocity);
+      if (nextSurfaceToLand = 256) {
+         if ((doodle.getDoodleBottom() - 1 - velocity) > 255) {
+            let velocity = doodle.getDoodleBottom() - 255;
+            return true;
+         }
+         return false;
+      }
+      let velocity = doodle.getDoodleBottom() - nextSurfaceToLand + 1;
+      return true;
+   }
+
+   // Jump!!
+   method void jump() {
+      let velocity = 15;
+      do Sys.wait(15);
+      return;
+   }
+
+   /** Runs the game: handles the user's inputs and moves the doodle accordingly */
+   method void run() {
+      var boolean exit;
+      var boolean landed;
+      let exit = false;
+
+      while (~exit) {
+         do adJustSpeed();
+         if (velocity < 0) {
+            let landed = canLand();
+            do moveDoodle();
+            do platformManager.collideAndReconstruct(doodle.getDoodleLeft(), doodle.getDoodleRight(), doodle.getDoodleTop(), doodle.getDoodleBottom());
+            if (landed) {
+               do jump();
+            }
+         } else {
+            let downVelocity = initDownVelocity();
+            // Check if reach max height, if so, set a downward velocity
+            do movePlatforms();
+            do platformManager.generatePlatform();
+            do platformManager.collideAndReconstruct(doodle.getDoodleLeft(), doodle.getDoodleRight(), doodle.getDoodleTop(), doodle.getDoodleBottom());
+            do doodle.draw();
+            do moveDoodle();
+            do platformManager.collideAndReconstruct(doodle.getDoodleLeft(), doodle.getDoodleRight(), doodle.getDoodleTop(), doodle.getDoodleBottom());
+         }
+         // Wait 30 clock cycles to let animation show properly
+         do Sys.wait(30);
+      } // while
+      return;
+   }
+}
+
+
+

@@ -1,0 +1,93 @@
+/** Implements a graphical Platform. */
+class PlatformManager {
+    field Array platforms;
+    field int nextPosition;
+    field int platformIndex;
+
+    constructor PlatformManager new() {
+        var int i;
+        let i = 0;
+        let platforms = Array.new(10);
+        let nextPosition = 201;
+        while (i < 10) {
+            let platforms[i] = -1;
+            let i = i + 1;
+        }
+        do generatePlatform();
+        
+        return this;
+    }
+
+    method void generatePlatform() {
+        while (nextPosition > 75) {
+            let platformIndex = updatePlatformIndex(platformIndex);
+            let platforms[platformIndex] = Platform.new(456, nextPosition);
+            let nextPosition = nextPosition - 75;
+        }
+        return;
+    }
+
+    method int updatePlatformIndex(int index) {
+      if ((index + 1) > 9) {
+         return LCGRandom.mod(index + 1, 10);
+      }
+      return index + 1;
+    }
+
+    method void updatePosition(int downVelocity) {
+        let nextPosition = nextPosition - downVelocity;
+        return;
+    }
+
+    method void moveDownPlatforms(int downVelocity) {
+        var int i;
+        var Platform platformPtr;
+        let i = 0;
+        while (i < 10) {
+            let platformPtr = platforms[i];
+            if (~(platforms[i] = -1)) {
+                if (~platformPtr.moveDown(downVelocity)) {
+                    do platformPtr.dispose();
+                    let platforms[i] = -1;
+                }
+            }
+            let i = i + 1;
+        }
+        do updatePosition(downVelocity);
+        return;
+    }
+
+    method void collideAndReconstruct(int doodleLeft, int doodleRight, int doodleTop, int doodleBottom) {
+        var int i;
+        var Platform platformPtr;
+        let i = 0;
+        while (i < 10) {
+            let platformPtr = platforms[i];
+            if (~(platforms[i] = -1)) {   // First check if platfom collide with doodle. Feed the result into reconstruct to determine whether to reconstruct or not
+                do platformPtr.reconstruct(platformPtr.checkCollide(doodleLeft, doodleRight, doodleTop, doodleBottom));
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    // Adjust the speed so that doodle would land on the platform
+    method boolean platformToLand(int nextDoodleLeft, int nextDoodleRight, int nextDoodleTop, int nextDoodleBottom) {
+        var int i;
+        var int nextSurfaceToLand;
+        var Platform platformPtr;
+        let i = 0;
+        let nextSurfaceToLand = 256;
+
+        while (i < 10) {
+            let platformPtr = platforms[i];
+            if (~(platforms[i] = -1)) {   // Check if doodle next frame will make contact with (land on) any platform
+                if (platformPtr.checkContact(nextDoodleLeft, nextDoodleRight, nextDoodleTop, nextDoodleBottom)) {
+                    let nextSurfaceToLand = Math.min(nextSurfaceToLand, platformPtr.getSurface());
+                }
+            }
+            let i = i + 1;
+        }
+        return nextSurfaceToLand;
+    }
+}
