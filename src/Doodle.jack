@@ -44,15 +44,13 @@ class Doodle {
    method void draw() {
       do SpriteBlack.doodleRight(x, y);
       do SpriteWhite.doodleRight(x, y);
-      // do Screen.setColor(true);
-      // do spriteFrame();
       return;
    }
 
    /** Erases the square from the screen. */
    method void erase() {
       do Screen.setColor(false);
-      do spriteFrame();
+      do Screen.drawRectangle(x, y, x + size, y + size);
       return;
    }
 

@@ -6,6 +6,8 @@
 class Main {
     function void main() {
         var DoodleJump game;
+        var int randomSeed;
+        let randomSeed = 0;
         while (true) {
             do GameFlowManager.clearScreen();
             do MainMenu.init();
@@ -13,7 +15,7 @@ class Main {
                 do Sys.wait(100);
             }
             do GameFlowManager.clearScreen();
-            let game = DoodleJump.new();
+            let game = DoodleJump.new(randomSeed);
             do game.run();
             do game.dispose();
             do GameFlowManager.clearScreen();
@@ -21,7 +23,9 @@ class Main {
             while (~(Keyboard.keyPressed() = 32)) {
                 do Sys.wait(100);
             }
+            let randomSeed = randomSeed + 1;
             do Sys.wait(300);
+
         }
         return;
     }

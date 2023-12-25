@@ -1,4 +1,6 @@
-function Main.main 1
+function Main.main 2
+push constant 0
+pop local 1
 label WHILE_EXP0
 push constant 0
 not
@@ -22,7 +24,8 @@ goto WHILE_EXP1
 label WHILE_END1
 call GameFlowManager.clearScreen 0
 pop temp 0
-call DoodleJump.new 0
+push local 1
+call DoodleJump.new 1
 pop local 0
 push local 0
 call DoodleJump.run 1
@@ -48,6 +51,10 @@ call Sys.wait 1
 pop temp 0
 goto WHILE_EXP2
 label WHILE_END2
+push local 1
+push constant 1
+add
+pop local 1
 push constant 300
 call Sys.wait 1
 pop temp 0

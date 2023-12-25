@@ -16,7 +16,7 @@ class EndingScreen {
         do Output.printString("Press space to return to main menu.");
 
         do Screen.drawRectangle(0,0,56,255);
-        do Screen.drawRectangle(456,0,511,255);
+        do Screen.drawRectangle(455,0,511,255);
         return;
     }
 

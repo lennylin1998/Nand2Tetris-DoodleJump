@@ -9,8 +9,9 @@ class MainMenu {
         do Output.moveCursor(21, 17);
         do Output.printString("Press space to start the game.");
 
+        do Screen.setColor(true);
         do Screen.drawRectangle(0,0,56,255);
-        do Screen.drawRectangle(456,0,511,255);
+        do Screen.drawRectangle(455,0,511,255);
         return;
     }
 

@@ -125,7 +125,7 @@ push constant 56
 push constant 255
 call Screen.drawRectangle 4
 pop temp 0
-push constant 456
+push constant 455
 push constant 0
 push constant 511
 push constant 255

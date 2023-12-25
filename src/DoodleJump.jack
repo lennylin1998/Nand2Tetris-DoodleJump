@@ -13,12 +13,13 @@ class DoodleJump {
    field int score;
 
    /** Constructs a new Doodle Game. */
-   constructor DoodleJump new() {
+   constructor DoodleJump new(int randomSeed) {
       // Set random seed
-      do LCGRandom.setSeed(42);
+      do LCGRandom.setSeed(randomSeed);
+
       // Set max height to 55
       let maxHeight = 55;
-      // Creates a 31 by 31 pixels doodle
+      // Creates a 32 by 32 pixels doodle
       let doodle = Doodle.new(256, 100, 31);
       let platformManager = PlatformManager.new();
 
@@ -62,14 +63,6 @@ class DoodleJump {
       do Output.moveCursor(0, 17);
       do Output.printInt(score);
       return;
-   }
-
-   method boolean gameOver() {
-      if (doodle.getDoodleTop() > 255) {
-         do Output.printString("GAME OVER!");
-         return true;
-      }
-      return false;
    }
 
    method void updateScoreAndLevel() {
@@ -162,10 +155,8 @@ class DoodleJump {
 
    method void run() {
       var boolean landed;
-      var boolean gameOver;
-      let gameOver = false;
 
-      while (~gameOver) {
+      while (doodle.getDoodleBottom() - velocity < 255) {
          do platformManager.movePlatforms(downVelocity);
          do updateScoreAndLevel();
          if (velocity < 0) {
@@ -188,8 +179,9 @@ class DoodleJump {
          }
          // Wait 30 clock cycles to let animation show properly
          do Sys.wait(30);
-         let gameOver = gameOver();
       } // while
+      do doodle.erase();
+      do Sys.wait(2000);
       return;
    }
 
