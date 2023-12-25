@@ -10,8 +10,9 @@ call MainMenu.init 0
 pop temp 0
 label WHILE_EXP1
 call Keyboard.keyPressed 0
-push constant 0
+push constant 32
 eq
+not
 not
 if-goto WHILE_END1
 push constant 100
@@ -37,8 +38,9 @@ call EndingScreen.show 1
 pop temp 0
 label WHILE_EXP2
 call Keyboard.keyPressed 0
-push constant 0
+push constant 32
 eq
+not
 not
 if-goto WHILE_END2
 push constant 100
@@ -46,6 +48,9 @@ call Sys.wait 1
 pop temp 0
 goto WHILE_EXP2
 label WHILE_END2
+push constant 300
+call Sys.wait 1
+pop temp 0
 goto WHILE_EXP0
 label WHILE_END0
 push constant 0

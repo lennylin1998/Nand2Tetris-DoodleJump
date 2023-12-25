@@ -20,17 +20,17 @@ class PlatformManager {
         return this;
     }
 
-    method boolean isMovingPlatform() {
+    method boolean isPlatformStill() {
         if (LCGRandom.randRange(0, 10 - level) = 0) {
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     method void generateRandomPlatform() {
         while (nextPosition > 13) {
             let platformIndex = updatePlatformIndex(platformIndex);
-            let platforms[platformIndex] = Platform.new(LCGRandom.randRange(130, 342), nextPosition, isMovingPlatform());
+            let platforms[platformIndex] = Platform.new(LCGRandom.randRange(130, 342), nextPosition, isPlatformStill());
             let nextPosition = nextPosition - LCGRandom.randRange(10, 100); 
         }
         return;
@@ -102,5 +102,12 @@ class PlatformManager {
             let i = i + 1;
         }
         return nextSurfaceToLand;
+    }
+
+    method void updateLevel(int score) {
+        var int tempLevel;
+        let tempLevel = score / 1000;
+        let level = Math.min(tempLevel, 10);
+        return;
     }
 }

@@ -1,14 +1,22 @@
 class EndingScreen {
     function void show(int score) {
         do EndingScreen.drawBackground();
+        do EndingScreen.prompt();
+
         
         do Output.moveCursor(18, 25);
         do Output.printString("Your score: ");
         do Output.printInt(score);
 
+        return;
+    }
+
+    function void prompt() {
+        do Output.moveCursor(21, 15);
+        do Output.printString("Press space to return to main menu.");
+
         do Screen.drawRectangle(0,0,56,255);
         do Screen.drawRectangle(456,0,511,255);
-
         return;
     }
 

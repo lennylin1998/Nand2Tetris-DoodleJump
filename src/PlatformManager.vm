@@ -37,7 +37,7 @@ call PlatformManager.generateRandomPlatform 1
 pop temp 0
 push pointer 0
 return
-function PlatformManager.isMovingPlatform 0
+function PlatformManager.isPlatformStill 0
 push argument 0
 pop pointer 0
 push constant 0
@@ -51,10 +51,10 @@ if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
 push constant 0
-not
 return
 label IF_FALSE0
 push constant 0
+not
 return
 function PlatformManager.generateRandomPlatform 0
 push argument 0
@@ -77,7 +77,7 @@ push constant 342
 call LCGRandom.randRange 2
 push this 1
 push pointer 0
-call PlatformManager.isMovingPlatform 1
+call PlatformManager.isPlatformStill 1
 call Platform.new 3
 pop temp 0
 pop pointer 1
@@ -300,4 +300,17 @@ pop local 0
 goto WHILE_EXP0
 label WHILE_END0
 push local 1
+return
+function PlatformManager.updateLevel 1
+push argument 0
+pop pointer 0
+push argument 1
+push constant 1000
+call Math.divide 2
+pop local 0
+push local 0
+push constant 10
+call Math.min 2
+pop this 3
+push constant 0
 return

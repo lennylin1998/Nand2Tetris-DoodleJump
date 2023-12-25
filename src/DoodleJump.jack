@@ -23,7 +23,7 @@ class DoodleJump {
       let platformManager = PlatformManager.new();
 
       let velocity = -5;
-      let score = 0;
+      let score = 32700;
 
       do separateScreen();
       do initializeScore();
@@ -56,6 +56,9 @@ class DoodleJump {
    // Update score and return height(negative speed for platforms to moveDown)
    method void updateScore() {
       let score = score - downVelocity;
+      if (score < 0) {
+         let score = 32767;
+      }
       do Output.moveCursor(0, 17);
       do Output.printInt(score);
       return;
@@ -66,21 +69,14 @@ class DoodleJump {
          do Output.printString("GAME OVER!");
          return true;
       }
-      if (score < 0) {
-         let score = 32767;
-         do Output.moveCursor(0, 33);
-         do Output.printInt(score);
-         do Output.printString("GAME OVER!");
-         return true;
-      }
       return false;
    }
 
-   method void movePlatformsAndUpdateScore() {
-      do platformManager.movePlatforms(downVelocity);
+   method void updateScoreAndLevel() {
       // if downward velocity is not 0 update scores and adjust downVelocity
       if (downVelocity < 0) {
          do updateScore();
+         do platformManager.updateLevel(score);
          let downVelocity = downVelocity + 1;
       }
       return;
@@ -138,8 +134,8 @@ class DoodleJump {
       if ((doodle.getDoodleLeft() + speed) < 128) {
          let speed = 128 - doodle.getDoodleLeft();
       }
-      if ((doodle.getDoodleRight() + speed) > 384) {
-         let speed = 384 - doodle.getDoodleRight();
+      if ((doodle.getDoodleRight() + speed) > 383) {
+         let speed = 383 - doodle.getDoodleRight();
       }
 
       return;
@@ -170,7 +166,8 @@ class DoodleJump {
       let gameOver = false;
 
       while (~gameOver) {
-         do movePlatformsAndUpdateScore();
+         do platformManager.movePlatforms(downVelocity);
+         do updateScoreAndLevel();
          if (velocity < 0) {
             let landed = canLand();
             do moveDoodle();
@@ -181,7 +178,9 @@ class DoodleJump {
          } else {
             // Check if reach max height, if so, set a downward velocity
             let downVelocity = initDownVelocity();
-            do platformManager.generateRandomPlatform();
+            if (~(score = 32767)) {
+               do platformManager.generateRandomPlatform();
+            }
             do platformManager.collideAndReconstruct(doodle.getDoodleLeft(), doodle.getDoodleRight(), doodle.getDoodleTop(), doodle.getDoodleBottom());
             do doodle.draw();
             do moveDoodle();

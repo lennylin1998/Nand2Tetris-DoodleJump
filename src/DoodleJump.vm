@@ -17,7 +17,7 @@ pop this 4
 push constant 5
 neg
 pop this 2
-push constant 0
+push constant 32700
 pop this 6
 push pointer 0
 call DoodleJump.separateScreen 1
@@ -87,6 +87,15 @@ push this 6
 push this 5
 sub
 pop this 6
+push this 6
+push constant 0
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 32767
+pop this 6
+label IF_FALSE0
 push constant 0
 push constant 17
 call Output.moveCursor 2
@@ -134,58 +143,11 @@ push constant 0
 not
 return
 label IF_FALSE0
-push this 6
-push constant 0
-lt
-if-goto IF_TRUE1
-goto IF_FALSE1
-label IF_TRUE1
-push constant 32767
-pop this 6
-push constant 0
-push constant 33
-call Output.moveCursor 2
-pop temp 0
-push this 6
-call Output.printInt 1
-pop temp 0
-push constant 10
-call String.new 1
-push constant 71
-call String.appendChar 2
-push constant 65
-call String.appendChar 2
-push constant 77
-call String.appendChar 2
-push constant 69
-call String.appendChar 2
-push constant 32
-call String.appendChar 2
-push constant 79
-call String.appendChar 2
-push constant 86
-call String.appendChar 2
-push constant 69
-call String.appendChar 2
-push constant 82
-call String.appendChar 2
-push constant 33
-call String.appendChar 2
-call Output.printString 1
-pop temp 0
-push constant 0
-not
-return
-label IF_FALSE1
 push constant 0
 return
-function DoodleJump.movePlatformsAndUpdateScore 0
+function DoodleJump.updateScoreAndLevel 0
 push argument 0
 pop pointer 0
-push this 4
-push this 5
-call PlatformManager.movePlatforms 2
-pop temp 0
 push this 5
 push constant 0
 lt
@@ -194,6 +156,10 @@ goto IF_FALSE0
 label IF_TRUE0
 push pointer 0
 call DoodleJump.updateScore 1
+pop temp 0
+push this 4
+push this 6
+call PlatformManager.updateLevel 2
 pop temp 0
 push this 5
 push constant 1
@@ -358,12 +324,12 @@ push this 1
 call Doodle.getDoodleRight 1
 push this 3
 add
-push constant 384
+push constant 383
 gt
 if-goto IF_TRUE4
 goto IF_FALSE4
 label IF_TRUE4
-push constant 384
+push constant 383
 push this 1
 call Doodle.getDoodleRight 1
 sub
@@ -432,8 +398,12 @@ push local 1
 not
 not
 if-goto WHILE_END0
+push this 4
+push this 5
+call PlatformManager.movePlatforms 2
+pop temp 0
 push pointer 0
-call DoodleJump.movePlatformsAndUpdateScore 1
+call DoodleJump.updateScoreAndLevel 1
 pop temp 0
 push this 2
 push constant 0
@@ -471,9 +441,17 @@ label IF_FALSE0
 push pointer 0
 call DoodleJump.initDownVelocity 1
 pop this 5
+push this 6
+push constant 32767
+eq
+not
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
 push this 4
 call PlatformManager.generateRandomPlatform 1
 pop temp 0
+label IF_FALSE2
 push this 4
 push this 1
 call Doodle.getDoodleLeft 1
