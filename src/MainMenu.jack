@@ -1,18 +1,20 @@
-class Main {
-    function void main() {
-        let location = 0; // Set the location for the drawing
-        do Main.draw(location);
-        
-        do Output.moveCursor(21, 15);
-        do Output.printString("Press any key to enter the game.");
-
-        do Screen.drawRectangle(0,0,56,255);
-        do Screen.drawRectangle(456,0,511,255);
-
+class MainMenu {
+    function void init() {
+        do MainMenu.drawBackground();
+        do MainMenu.prompt();
         return;
     }
 
-    function void draw(int location) {
+    function void prompt() {
+        do Output.moveCursor(21, 17);
+        do Output.printString("Press space to start the game.");
+
+        do Screen.drawRectangle(0,0,56,255);
+        do Screen.drawRectangle(456,0,511,255);
+        return;
+    }
+
+    function void drawBackground() {
         var int memAddress, horizontalOffset;
         var int screenWidth, screenHeight, picWidth, picHeight;
 

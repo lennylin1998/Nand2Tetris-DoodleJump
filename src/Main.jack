@@ -3,14 +3,26 @@
 // by Nisan and Schocken, MIT Press.
 // File name: projects/09/Square/Main.jack
 
-/** Initializes a new Square Dance game and starts running it. */
 class Main {
     function void main() {
         var DoodleJump game;
-        do LCGRandom.setSeed(42);
-        let game = DoodleJump.new();
-        do game.run();
-        do game.dispose();
+        while (true) {
+            do GameFlowManager.clearScreen();
+            do MainMenu.init();
+            while (~(Keyboard.keyPressed() = 32)) {
+                do Sys.wait(100);
+            }
+            do GameFlowManager.clearScreen();
+            let game = DoodleJump.new();
+            do game.run();
+            do game.dispose();
+            do GameFlowManager.clearScreen();
+            do EndingScreen.show(game.getScore());
+            while (~(Keyboard.keyPressed() = 32)) {
+                do Sys.wait(100);
+            }
+            do Sys.wait(300);
+        }
         return;
     }
 }

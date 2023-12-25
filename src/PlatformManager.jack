@@ -3,12 +3,14 @@ class PlatformManager {
     field Array platforms;
     field int nextPosition;
     field int platformIndex;
+    field int level;
 
     constructor PlatformManager new() {
         var int i;
         let i = 0;
         let platforms = Array.new(10);
         let nextPosition = 245;
+        let level = 0;
         while (i < 10) {
             let platforms[i] = -1;
             let i = i + 1;
@@ -18,10 +20,17 @@ class PlatformManager {
         return this;
     }
 
+    method boolean isPlatformStill() {
+        if (LCGRandom.randRange(0, 10 - level) = 0) {
+            return false;
+        }
+        return true;
+    }
+
     method void generateRandomPlatform() {
         while (nextPosition > 13) {
             let platformIndex = updatePlatformIndex(platformIndex);
-            let platforms[platformIndex] = Platform.new(LCGRandom.randRange(258, 469), nextPosition);
+            let platforms[platformIndex] = Platform.new(LCGRandom.randRange(130, 342), nextPosition, isPlatformStill());
             let nextPosition = nextPosition - LCGRandom.randRange(10, 100); 
         }
         return;
@@ -39,16 +48,20 @@ class PlatformManager {
         return;
     }
 
-    method void moveDownPlatforms(int downVelocity) {
+    method void movePlatforms(int downVelocity) {
         var int i;
         var Platform platformPtr;
         let i = 0;
+
         while (i < 10) {
             let platformPtr = platforms[i];
             if (~(platforms[i] = -1)) {
-                if (~platformPtr.moveDown(downVelocity)) {
+                if (~(downVelocity = 0) & platformPtr.outOfScreen(downVelocity)) {
+                    do platformPtr.erase();
                     do platformPtr.dispose();
                     let platforms[i] = -1;
+                } else {
+                    do platformPtr.move(downVelocity);
                 }
             }
             let i = i + 1;
@@ -89,5 +102,12 @@ class PlatformManager {
             let i = i + 1;
         }
         return nextSurfaceToLand;
+    }
+
+    method void updateLevel(int score) {
+        var int tempLevel;
+        let tempLevel = score / 1000;
+        let level = Math.min(tempLevel, 10);
+        return;
     }
 }
