@@ -3,5 +3,17 @@ push constant 256
 push constant 128
 call SpriteBlack.doodleRight 2
 pop temp 0
+push constant 256
+push constant 128
+call SpriteWhite.doodleRight 2
+pop temp 0
+push constant 456
+push constant 128
+call SpriteWhiteMirror.doodleRight 2
+pop temp 0
+push constant 456
+push constant 128
+call SpriteBlackMirror.doodleRight 2
+pop temp 0
 push constant 0
 return
