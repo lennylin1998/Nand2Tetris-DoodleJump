@@ -42,8 +42,10 @@ class Doodle {
 
    /** Draws the square on the screen. */
    method void draw() {
-      do Screen.setColor(true);
-      do spriteFrame();
+      do SpriteBlack.doodleRight(x, y);
+      do SpriteWhite.doodleRight(x, y);
+      // do Screen.setColor(true);
+      // do spriteFrame();
       return;
    }
 
@@ -76,14 +78,10 @@ class Doodle {
       }
       do erase();
       let y = y - velocity;
+      if ((y + size) > 255) {
+         return;
+      }
       do draw();
-      /**
-         do Screen.setColor(false);
-         do Screen.drawRectangle(x, y, x + size, y - velocity - 1);
-         let y = y - velocity;
-         do Screen.setColor(true);
-         do Screen.drawRectangle(x, y + size - 1 + velocity, x + size, y + size - 1);
-      */
       return;
    }
 

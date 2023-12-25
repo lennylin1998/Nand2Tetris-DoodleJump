@@ -17,7 +17,7 @@ pop this 4
 push constant 5
 neg
 pop this 2
-push constant 32700
+push constant 0
 pop this 6
 push pointer 0
 call DoodleJump.separateScreen 1

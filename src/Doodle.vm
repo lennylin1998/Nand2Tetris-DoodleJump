@@ -83,12 +83,13 @@ return
 function Doodle.draw 0
 push argument 0
 pop pointer 0
-push constant 0
-not
-call Screen.setColor 1
+push this 0
+push this 1
+call SpriteBlack.doodleRight 2
 pop temp 0
-push pointer 0
-call Doodle.spriteFrame 1
+push this 0
+push this 1
+call SpriteWhite.doodleRight 2
 pop temp 0
 push constant 0
 return
@@ -137,6 +138,17 @@ push this 1
 push argument 1
 sub
 pop this 1
+push this 1
+push this 2
+add
+push constant 255
+gt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+return
+label IF_FALSE1
 push pointer 0
 call Doodle.draw 1
 pop temp 0
