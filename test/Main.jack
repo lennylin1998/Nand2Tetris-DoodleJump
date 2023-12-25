@@ -6,7 +6,6 @@
 class Main {
     function void main() {
         do SpriteBlack.doodleRight(256, 128);
-        do SpriteWhite.doodleRight(256, 128);
         return;
     }
 }

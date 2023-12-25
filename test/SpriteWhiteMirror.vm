@@ -1,5 +1,6 @@
-function SpriteWhite.doodleRight 0
+function SpriteWhiteMirror.doodleRight 0
 push constant 0
+not
 call Screen.setColor 1
 pop temp 0
 push argument 0

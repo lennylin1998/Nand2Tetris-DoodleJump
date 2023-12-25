@@ -1,6 +1,6 @@
-class SpriteWhite {
+class SpriteWhiteMirror {
     function void doodleRight(int x, int y) {
-        do Screen.setColor(false);
+        do Screen.setColor(true);
         do Screen.drawPixel(x+ 31 , y+ 0 );
         do Screen.drawPixel(x+ 31 , y+ 1 );
         do Screen.drawPixel(x+ 31 , y+ 2 );
