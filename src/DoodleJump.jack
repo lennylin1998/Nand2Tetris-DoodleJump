@@ -1,7 +1,3 @@
-// This file is part of www.nand2tetris.org
-// and the book "The Elements of Computing Systems"
-// by Nisan and Schocken, MIT Press.
-// File name: projects/09/Doodle/DoodleJump.jack
 class DoodleJump {
    field int maxHeight;
 
@@ -18,17 +14,20 @@ class DoodleJump {
 
    /** Constructs a new Doodle Game. */
    constructor DoodleJump new() {
+      // Set random seed
+      do LCGRandom.setSeed(42);
       // Set max height to 55
       let maxHeight = 55;
       // Creates a 31 by 31 pixels doodle
-      let doodle = Doodle.new(256, 100, 30);
+      let doodle = Doodle.new(256, 100, 31);
       let platformManager = PlatformManager.new();
 
       let velocity = -5;
-      let score = 32700;
+      let score = 0;
 
       do separateScreen();
       do initializeScore();
+      do Sys.wait(1000);
       return this;
    }
 
@@ -41,13 +40,15 @@ class DoodleJump {
 
    method void separateScreen() {
       do Screen.setColor(true);
-      do Screen.drawRectangle(0, 0, 255, 255);
-      do Screen.drawRectangle(256, 12, 511, 13);
+      do Screen.drawRectangle(0, 0, 127, 255);
+      do Screen.drawRectangle(384, 0, 511, 255);
+   
+      do Screen.drawRectangle(0, 12, 511, 13);
       return;
    }
 
    method void initializeScore() {
-      do Output.moveCursor(0, 33);
+      do Output.moveCursor(0, 17);
       do Output.printInt(score);
       return;
    }
@@ -55,7 +56,7 @@ class DoodleJump {
    // Update score and return height(negative speed for platforms to moveDown)
    method void updateScore() {
       let score = score - downVelocity;
-      do Output.moveCursor(0, 33);
+      do Output.moveCursor(0, 17);
       do Output.printInt(score);
       return;
    }
@@ -75,10 +76,10 @@ class DoodleJump {
       return false;
    }
 
-   method void movePlatforms() {
-      // if downward velocity is not 0, move the platforms down first and update scores
+   method void movePlatformsAndUpdateScore() {
+      do platformManager.movePlatforms(downVelocity);
+      // if downward velocity is not 0 update scores and adjust downVelocity
       if (downVelocity < 0) {
-         do platformManager.moveDownPlatforms(downVelocity);
          do updateScore();
          let downVelocity = downVelocity + 1;
       }
@@ -134,11 +135,11 @@ class DoodleJump {
       }
 
       // Adjust speed when reach left bound or right bound so that memory address would always be valid
-      if ((doodle.getDoodleLeft() + speed) < 256) {
-         let speed = 256 - doodle.getDoodleLeft();
+      if ((doodle.getDoodleLeft() + speed) < 128) {
+         let speed = 128 - doodle.getDoodleLeft();
       }
-      if ((doodle.getDoodleRight() + speed) > 511) {
-         let speed = 511 - doodle.getDoodleRight();
+      if ((doodle.getDoodleRight() + speed) > 384) {
+         let speed = 384 - doodle.getDoodleRight();
       }
 
       return;
@@ -163,13 +164,13 @@ class DoodleJump {
       return;
    }
 
-   /** Runs the game: handles the user's inputs and moves the doodle accordingly */
    method void run() {
       var boolean landed;
       var boolean gameOver;
       let gameOver = false;
 
       while (~gameOver) {
+         do movePlatformsAndUpdateScore();
          if (velocity < 0) {
             let landed = canLand();
             do moveDoodle();
@@ -178,9 +179,8 @@ class DoodleJump {
                do jump();
             }
          } else {
-            let downVelocity = initDownVelocity();
             // Check if reach max height, if so, set a downward velocity
-            do movePlatforms();
+            let downVelocity = initDownVelocity();
             do platformManager.generateRandomPlatform();
             do platformManager.collideAndReconstruct(doodle.getDoodleLeft(), doodle.getDoodleRight(), doodle.getDoodleTop(), doodle.getDoodleBottom());
             do doodle.draw();
@@ -192,6 +192,10 @@ class DoodleJump {
          let gameOver = gameOver();
       } // while
       return;
+   }
+
+   method int getScore() {
+      return score;
    }
 }
 

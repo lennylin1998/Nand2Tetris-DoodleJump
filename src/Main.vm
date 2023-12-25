@@ -1,6 +1,25 @@
 function Main.main 1
-push constant 42
-call LCGRandom.setSeed 1
+label WHILE_EXP0
+push constant 0
+not
+not
+if-goto WHILE_END0
+call GameFlowManager.clearScreen 0
+pop temp 0
+call MainMenu.init 0
+pop temp 0
+label WHILE_EXP1
+call Keyboard.keyPressed 0
+push constant 0
+eq
+not
+if-goto WHILE_END1
+push constant 100
+call Sys.wait 1
+pop temp 0
+goto WHILE_EXP1
+label WHILE_END1
+call GameFlowManager.clearScreen 0
 pop temp 0
 call DoodleJump.new 0
 pop local 0
@@ -10,5 +29,24 @@ pop temp 0
 push local 0
 call DoodleJump.dispose 1
 pop temp 0
+call GameFlowManager.clearScreen 0
+pop temp 0
+push local 0
+call DoodleJump.getScore 1
+call EndingScreen.show 1
+pop temp 0
+label WHILE_EXP2
+call Keyboard.keyPressed 0
+push constant 0
+eq
+not
+if-goto WHILE_END2
+push constant 100
+call Sys.wait 1
+pop temp 0
+goto WHILE_EXP2
+label WHILE_END2
+goto WHILE_EXP0
+label WHILE_END0
 push constant 0
 return

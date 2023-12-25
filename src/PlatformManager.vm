@@ -1,5 +1,5 @@
 function PlatformManager.new 1
-push constant 3
+push constant 4
 call Memory.alloc 1
 pop pointer 0
 push constant 0
@@ -9,6 +9,8 @@ call Array.new 1
 pop this 0
 push constant 245
 pop this 1
+push constant 0
+pop this 3
 label WHILE_EXP0
 push local 0
 push constant 10
@@ -35,6 +37,25 @@ call PlatformManager.generateRandomPlatform 1
 pop temp 0
 push pointer 0
 return
+function PlatformManager.isMovingPlatform 0
+push argument 0
+pop pointer 0
+push constant 0
+push constant 10
+push this 3
+sub
+call LCGRandom.randRange 2
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+return
+label IF_FALSE0
+push constant 0
+return
 function PlatformManager.generateRandomPlatform 0
 push argument 0
 pop pointer 0
@@ -51,11 +72,13 @@ pop this 2
 push this 2
 push this 0
 add
-push constant 258
-push constant 469
+push constant 130
+push constant 342
 call LCGRandom.randRange 2
 push this 1
-call Platform.new 2
+push pointer 0
+call PlatformManager.isMovingPlatform 1
+call Platform.new 3
 pop temp 0
 pop pointer 1
 push temp 0
@@ -101,7 +124,7 @@ sub
 pop this 1
 push constant 0
 return
-function PlatformManager.moveDownPlatforms 2
+function PlatformManager.movePlatforms 2
 push argument 0
 pop pointer 0
 push constant 0
@@ -130,13 +153,20 @@ not
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
+push argument 1
+push constant 0
+eq
+not
 push local 1
 push argument 1
-call Platform.moveDown 2
-not
+call Platform.outOfScreen 2
+and
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
+push local 1
+call Platform.erase 1
+pop temp 0
 push local 1
 call Platform.dispose 1
 pop temp 0
@@ -149,7 +179,13 @@ pop temp 0
 pop pointer 1
 push temp 0
 pop that 0
+goto IF_END1
 label IF_FALSE1
+push local 1
+push argument 1
+call Platform.move 2
+pop temp 0
+label IF_END1
 label IF_FALSE0
 push local 0
 push constant 1

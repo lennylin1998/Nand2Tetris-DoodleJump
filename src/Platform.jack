@@ -4,13 +4,15 @@ class Platform {
    field int x, y; // screen location of the square's top-left corner
    field boolean collide; // if the platform collide with the doodle
    field boolean needReconstruct;  // if the platform need reconstruct
-   field Array surface;
+   field int speed;
+
    /** Constructs a new square with a given location and size. */
-   constructor Platform new(int Ax, int Ay) {
+   constructor Platform new(int Ax, int Ay, boolean still) {
       let x = Ax;
       let y = Ay;
       let needReconstruct = false;
       do draw();
+      do initSpeed(still);
       return this;
    }
 
@@ -96,14 +98,44 @@ class Platform {
       return y;
    }
 
+   method boolean outOfScreen(int downVelocity) {
+      if ((y - downVelocity + 3) > 255) {
+         return true;
+      }
+      return false;
+   }
+
+   method void initSpeed(boolean still) {
+      if (still) {
+         let speed = 0;
+         return;
+      }
+      if (LCGRandom.randRange(0, 1) = 0) {
+         let speed = -5;
+      } else {
+         let speed = 5;
+      }
+      return;
+   }
+
+   method int changeDirection(int nextCoordinate) {
+      if (nextCoordinate < 130) {
+         let speed = -speed;
+         return 130;
+      }
+      if (nextCoordinate > 342) {
+         let speed = -speed;
+         return 342;
+      }
+      return nextCoordinate;
+   }
+
    /** Move down the platform by downward velocity(score) */
-   method boolean moveDown(int downVelocity) {
+   method void move(int downVelocity) {
       do erase();
       let y = y - downVelocity;
-      if ((y + 3) > 255) {
-         return false;
-      }
+      let x = changeDirection(x + speed);
       do draw();
-      return true;
+      return;
    }
 }

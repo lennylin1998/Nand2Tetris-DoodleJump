@@ -1,0 +1,8 @@
+/** Manage Game Flow. */
+class GameFlowManager {
+   // start screen
+   function void clearScreen() {
+      do Screen.clearScreen();
+      return;
+   }
+}

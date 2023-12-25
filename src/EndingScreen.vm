@@ -1,6 +1,5 @@
-function Main.main 0
-push constant 0
-call Main.draw 1
+function EndingScreen.show 0
+call EndingScreen.drawBackground 0
 pop temp 0
 push constant 18
 push constant 25
@@ -34,6 +33,9 @@ push constant 32
 call String.appendChar 2
 call Output.printString 1
 pop temp 0
+push argument 0
+call Output.printInt 1
+pop temp 0
 push constant 0
 push constant 0
 push constant 56
@@ -48,7 +50,7 @@ call Screen.drawRectangle 4
 pop temp 0
 push constant 0
 return
-function Main.draw 6
+function EndingScreen.drawBackground 6
 push constant 512
 pop local 2
 push constant 256

@@ -2,11 +2,14 @@ function DoodleJump.new 0
 push constant 7
 call Memory.alloc 1
 pop pointer 0
+push constant 42
+call LCGRandom.setSeed 1
+pop temp 0
 push constant 55
 pop this 0
 push constant 256
 push constant 100
-push constant 30
+push constant 31
 call Doodle.new 3
 pop this 1
 call PlatformManager.new 0
@@ -14,13 +17,16 @@ pop this 4
 push constant 5
 neg
 pop this 2
-push constant 32700
+push constant 0
 pop this 6
 push pointer 0
 call DoodleJump.separateScreen 1
 pop temp 0
 push pointer 0
 call DoodleJump.initializeScore 1
+pop temp 0
+push constant 1000
+call Sys.wait 1
 pop temp 0
 push pointer 0
 return
@@ -44,11 +50,17 @@ call Screen.setColor 1
 pop temp 0
 push constant 0
 push constant 0
-push constant 255
+push constant 127
 push constant 255
 call Screen.drawRectangle 4
 pop temp 0
-push constant 256
+push constant 384
+push constant 0
+push constant 511
+push constant 255
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
 push constant 12
 push constant 511
 push constant 13
@@ -60,7 +72,7 @@ function DoodleJump.initializeScore 0
 push argument 0
 pop pointer 0
 push constant 0
-push constant 33
+push constant 17
 call Output.moveCursor 2
 pop temp 0
 push this 6
@@ -76,7 +88,7 @@ push this 5
 sub
 pop this 6
 push constant 0
-push constant 33
+push constant 17
 call Output.moveCursor 2
 pop temp 0
 push this 6
@@ -167,19 +179,19 @@ return
 label IF_FALSE1
 push constant 0
 return
-function DoodleJump.movePlatforms 0
+function DoodleJump.movePlatformsAndUpdateScore 0
 push argument 0
 pop pointer 0
+push this 4
+push this 5
+call PlatformManager.movePlatforms 2
+pop temp 0
 push this 5
 push constant 0
 lt
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push this 4
-push this 5
-call PlatformManager.moveDownPlatforms 2
-pop temp 0
 push pointer 0
 call DoodleJump.updateScore 1
 pop temp 0
@@ -331,12 +343,12 @@ push this 1
 call Doodle.getDoodleLeft 1
 push this 3
 add
-push constant 256
+push constant 128
 lt
 if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
-push constant 256
+push constant 128
 push this 1
 call Doodle.getDoodleLeft 1
 sub
@@ -346,12 +358,12 @@ push this 1
 call Doodle.getDoodleRight 1
 push this 3
 add
-push constant 511
+push constant 384
 gt
 if-goto IF_TRUE4
 goto IF_FALSE4
 label IF_TRUE4
-push constant 511
+push constant 384
 push this 1
 call Doodle.getDoodleRight 1
 sub
@@ -420,6 +432,9 @@ push local 1
 not
 not
 if-goto WHILE_END0
+push pointer 0
+call DoodleJump.movePlatformsAndUpdateScore 1
+pop temp 0
 push this 2
 push constant 0
 lt
@@ -456,9 +471,6 @@ label IF_FALSE0
 push pointer 0
 call DoodleJump.initDownVelocity 1
 pop this 5
-push pointer 0
-call DoodleJump.movePlatforms 1
-pop temp 0
 push this 4
 call PlatformManager.generateRandomPlatform 1
 pop temp 0
@@ -500,4 +512,9 @@ pop local 1
 goto WHILE_EXP0
 label WHILE_END0
 push constant 0
+return
+function DoodleJump.getScore 0
+push argument 0
+pop pointer 0
+push this 6
 return

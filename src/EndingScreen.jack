@@ -1,9 +1,10 @@
-class Main {
-    function void main() {
-        do Main.draw(0);
+class EndingScreen {
+    function void show(int score) {
+        do EndingScreen.drawBackground();
         
         do Output.moveCursor(18, 25);
         do Output.printString("Your score: ");
+        do Output.printInt(score);
 
         do Screen.drawRectangle(0,0,56,255);
         do Screen.drawRectangle(456,0,511,255);
@@ -11,7 +12,7 @@ class Main {
         return;
     }
 
-    function void draw(int location) {
+    function void drawBackground() {
         var int memAddress, horizontalOffset;
         var int screenWidth, screenHeight, picWidth, picHeight;
 

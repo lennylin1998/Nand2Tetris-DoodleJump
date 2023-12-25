@@ -96,11 +96,11 @@ class Doodle {
       let x = x + speed;
       do draw();
       /**
-      do Screen.setColor(false);
-      do Screen.drawRectangle(x + size - 1 + speed, y, x + size, y + size);
-      let x = x + speed ;
-      do Screen.setColor(true);
-      do Screen.drawRectangle(x, y, x - speed - 1, y + size);
+         do Screen.setColor(false);
+         do Screen.drawRectangle(x + size - 1 + speed, y, x + size, y + size);
+         let x = x + speed ;
+         do Screen.setColor(true);
+         do Screen.drawRectangle(x, y, x - speed - 1, y + size);
       */
       return;
    }
@@ -114,11 +114,11 @@ class Doodle {
       let x = x + speed;
       do draw();
       /**
-      do Screen.setColor(false);
-      do Screen.drawRectangle(x, y, x + speed - 1, y + size);
-      let x = x + speed;
-      do Screen.setColor(true);
-      do Screen.drawRectangle(x - speed + size, y, x + size - 1, y + size);
+         do Screen.setColor(false);
+         do Screen.drawRectangle(x, y, x + speed - 1, y + size);
+         let x = x + speed;
+         do Screen.setColor(true);
+         do Screen.drawRectangle(x - speed + size, y, x + size - 1, y + size);
       */
       return;
    }
