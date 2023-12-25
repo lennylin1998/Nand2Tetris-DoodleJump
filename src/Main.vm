@@ -1,5 +1,5 @@
 function Main.main 2
-push constant 0
+push constant 99
 pop local 1
 label WHILE_EXP0
 push constant 0

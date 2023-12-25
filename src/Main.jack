@@ -7,7 +7,7 @@ class Main {
     function void main() {
         var DoodleJump game;
         var int randomSeed;
-        let randomSeed = 0;
+        let randomSeed = 99;
         while (true) {
             do GameFlowManager.clearScreen();
             do MainMenu.init();

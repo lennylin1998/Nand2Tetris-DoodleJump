@@ -5,6 +5,7 @@ class Doodle {
    field int size; // length of this square, in pixels
    field int horizontalSplit;
    field int verticalSplit;
+   field boolean faceLeft;
    
 
    /** Constructs a new square with a given location and size. */
@@ -12,6 +13,7 @@ class Doodle {
       let x = Ax;
       let y = Ay;
       let size = Asize;
+      let faceLeft = true;
       do draw();
       return this;
    }
@@ -22,28 +24,14 @@ class Doodle {
       return;
    }
 
-   method void spriteFrame() {
-      var int i;
-      if (horizontalSplit < 0) {
-         return;
-      }
-      if (y + size > 255) {
-         let horizontalSplit = 255 - y;
-      } else {
-         let horizontalSplit = size + 1;
-      }
-      let i = 0;
-      while (i < horizontalSplit) {
-         do Screen.drawLine(x, y + i, x + size, y + i);
-         let i = i + 1;
-      }
-      return;
-   }
-
    /** Draws the square on the screen. */
    method void draw() {
-      do SpriteBlack.doodleRight(x, y);
-      do SpriteWhite.doodleRight(x, y);
+      // do DoodleSpriteWhiteLeft.draw(x, y);
+      if (faceLeft) {
+         do DoodleSpriteBlackLeft.draw(x, y);
+      } else {
+         do DoodleSpriteBlackRight.draw(x, y);
+      }
       return;
    }
 
@@ -88,6 +76,7 @@ class Doodle {
       if (speed = 0) {
          return;
       }
+      let faceLeft = true;
       do erase();
       let x = x + speed;
       do draw();
@@ -106,6 +95,7 @@ class Doodle {
       if (speed = 0) {
          return;
       }
+      let faceLeft = false;
       do erase();
       let x = x + speed;
       do draw();
