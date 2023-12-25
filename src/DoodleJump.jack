@@ -23,7 +23,7 @@ class DoodleJump {
       let platformManager = PlatformManager.new();
 
       let velocity = -5;
-      let score = 32700;
+      let score = 0;
 
       do separateScreen();
       do initializeScore();
