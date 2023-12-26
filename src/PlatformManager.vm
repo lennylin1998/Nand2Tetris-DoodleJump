@@ -9,7 +9,7 @@ call Array.new 1
 pop this 0
 push constant 245
 pop this 1
-push constant 8
+push constant 0
 pop this 3
 label WHILE_EXP0
 push local 0

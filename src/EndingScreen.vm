@@ -1,6 +1,3 @@
-function EndingScreen.getBestScore 0
-push static 0
-return
 function EndingScreen.show 0
 push argument 0
 push static 0

@@ -11,7 +11,7 @@ class PlatformManager {
         let i = 0;
         let platforms = Array.new(10);
         let nextPosition = 245;
-        let level = 8;
+        let level = 0;
         while (i < 10) {
             let platforms[i] = -1;
             let i = i + 1;
