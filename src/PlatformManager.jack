@@ -4,6 +4,7 @@ class PlatformManager {
     field int nextPosition;
     field int platformIndex;
     field int level;
+    field int landingPlatformIndex;
 
     constructor PlatformManager new() {
         var int i;
@@ -91,12 +92,16 @@ class PlatformManager {
         var Platform platformPtr;
         let i = 0;
         let nextSurfaceToLand = 256;
+        let landingPlatformIndex = -1;
 
         while (i < 10) {
             let platformPtr = platforms[i];
             if (~(platforms[i] = -1)) {   // Check if doodle next frame will make contact with (land on) any platform
                 if (platformPtr.checkContact(nextDoodleLeft, nextDoodleRight, nextDoodleTop, nextDoodleBottom)) {
-                    let nextSurfaceToLand = Math.min(nextSurfaceToLand, platformPtr.getSurface());
+                    if (nextSurfaceToLand > platformPtr.getSurface()) {
+                        let nextSurfaceToLand = platformPtr.getSurface();
+                        let landingPlatformIndex = i;
+                    }
                 }
             }
             let i = i + 1;
@@ -109,5 +114,13 @@ class PlatformManager {
         let tempLevel = score / 1000;
         let level = Math.min(tempLevel, 10);
         return;
+    }
+
+    method int getLandingPlatformIndex() {
+        return landingPlatformIndex;
+    }
+
+    method Platform getPlatformObjectByIndex(int platformIndex) {
+        return platforms[platformIndex];
     }
 }

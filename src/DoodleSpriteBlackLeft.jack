@@ -1,6 +1,6 @@
 class DoodleSpriteBlackLeft {
-    function void draw(int x, int y) {
-        do Screen.setColor(true);
+    function void draw(int x, int y, boolean color) {
+        do Screen.setColor(color);
         do Screen.drawPixel(x+ 30 , y+ 9 );
         do Screen.drawPixel(x+ 30 , y+ 10 );
         do Screen.drawPixel(x+ 30 , y+ 11 );

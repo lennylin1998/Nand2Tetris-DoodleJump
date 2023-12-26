@@ -26,19 +26,28 @@ class Doodle {
 
    /** Draws the square on the screen. */
    method void draw() {
-      // do DoodleSpriteWhiteLeft.draw(x, y);
+      do prepareWhiteSpace();
       if (faceLeft) {
-         do DoodleSpriteBlackLeft.draw(x, y);
+         // do DoodleSpriteWhiteLeft.draw(x, y);
+         do DoodleSpriteBlackLeft.draw(x, y, true);
       } else {
-         do DoodleSpriteBlackRight.draw(x, y);
+         do DoodleSpriteBlackRight.draw(x, y, true);
       }
       return;
    }
 
    /** Erases the square from the screen. */
    method void erase() {
+      if (faceLeft) {
+         do DoodleSpriteBlackLeft.draw(x, y, false);
+      } else {
+         do DoodleSpriteBlackRight.draw(x, y, false);
+      }
+      return;
+   }
+   method void prepareWhiteSpace() {
       do Screen.setColor(false);
-      do Screen.drawRectangle(x, y, x + size, y + size);
+      do Screen.drawCircle(x + 16, y + 16, 15);
       return;
    }
 
@@ -76,8 +85,8 @@ class Doodle {
       if (speed = 0) {
          return;
       }
-      let faceLeft = true;
       do erase();
+      let faceLeft = true;
       let x = x + speed;
       do draw();
       /**
@@ -95,8 +104,8 @@ class Doodle {
       if (speed = 0) {
          return;
       }
-      let faceLeft = false;
       do erase();
+      let faceLeft = false;
       let x = x + speed;
       do draw();
       /**

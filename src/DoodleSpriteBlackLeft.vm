@@ -1,6 +1,5 @@
 function DoodleSpriteBlackLeft.draw 0
-push constant 0
-not
+push argument 2
 call Screen.setColor 1
 pop temp 0
 push argument 0

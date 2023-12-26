@@ -27,19 +27,26 @@ return
 function Doodle.draw 0
 push argument 0
 pop pointer 0
+push pointer 0
+call Doodle.prepareWhiteSpace 1
+pop temp 0
 push this 5
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
 push this 0
 push this 1
-call DoodleSpriteBlackLeft.draw 2
+push constant 0
+not
+call DoodleSpriteBlackLeft.draw 3
 pop temp 0
 goto IF_END0
 label IF_FALSE0
 push this 0
 push this 1
-call DoodleSpriteBlackRight.draw 2
+push constant 0
+not
+call DoodleSpriteBlackRight.draw 3
 pop temp 0
 label IF_END0
 push constant 0
@@ -47,18 +54,39 @@ return
 function Doodle.erase 0
 push argument 0
 pop pointer 0
+push this 5
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 0
+push this 1
+push constant 0
+call DoodleSpriteBlackLeft.draw 3
+pop temp 0
+goto IF_END0
+label IF_FALSE0
+push this 0
+push this 1
+push constant 0
+call DoodleSpriteBlackRight.draw 3
+pop temp 0
+label IF_END0
+push constant 0
+return
+function Doodle.prepareWhiteSpace 0
+push argument 0
+pop pointer 0
 push constant 0
 call Screen.setColor 1
 pop temp 0
 push this 0
-push this 1
-push this 0
-push this 2
+push constant 16
 add
 push this 1
-push this 2
+push constant 16
 add
-call Screen.drawRectangle 4
+push constant 15
+call Screen.drawCircle 3
 pop temp 0
 push constant 0
 return
@@ -124,12 +152,12 @@ label IF_TRUE0
 push constant 0
 return
 label IF_FALSE0
-push constant 0
-not
-pop this 5
 push pointer 0
 call Doodle.erase 1
 pop temp 0
+push constant 0
+not
+pop this 5
 push this 0
 push argument 1
 add
@@ -151,11 +179,11 @@ label IF_TRUE0
 push constant 0
 return
 label IF_FALSE0
-push constant 0
-pop this 5
 push pointer 0
 call Doodle.erase 1
 pop temp 0
+push constant 0
+pop this 5
 push this 0
 push argument 1
 add

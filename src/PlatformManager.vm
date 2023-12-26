@@ -1,5 +1,5 @@
 function PlatformManager.new 1
-push constant 4
+push constant 5
 call Memory.alloc 1
 pop pointer 0
 push constant 0
@@ -253,6 +253,9 @@ push constant 0
 pop local 0
 push constant 256
 pop local 1
+push constant 1
+neg
+pop this 4
 label WHILE_EXP0
 push local 0
 push constant 10
@@ -289,8 +292,16 @@ label IF_TRUE1
 push local 1
 push local 2
 call Platform.getSurface 1
-call Math.min 2
+gt
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push local 2
+call Platform.getSurface 1
 pop local 1
+push local 0
+pop this 4
+label IF_FALSE2
 label IF_FALSE1
 label IF_FALSE0
 push local 0
@@ -313,4 +324,18 @@ push constant 10
 call Math.min 2
 pop this 3
 push constant 0
+return
+function PlatformManager.getLandingPlatformIndex 0
+push argument 0
+pop pointer 0
+push this 4
+return
+function PlatformManager.getPlatformObjectByIndex 0
+push argument 0
+pop pointer 0
+push argument 1
+push this 0
+add
+pop pointer 1
+push that 0
 return

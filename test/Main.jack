@@ -5,6 +5,8 @@
 
 class Main {
     function void main() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(0, 0, 511, 255);
         do SpriteBlack.doodleRight(256, 128);
         do SpriteWhite.doodleRight(256, 128);
 

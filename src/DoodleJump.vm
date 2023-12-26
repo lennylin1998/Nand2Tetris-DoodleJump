@@ -296,7 +296,7 @@ pop this 3
 label IF_FALSE4
 push constant 0
 return
-function DoodleJump.canLand 1
+function DoodleJump.findLandingPlatform 2
 push argument 0
 pop pointer 0
 push this 4
@@ -317,8 +317,8 @@ call Doodle.getDoodleBottom 1
 push this 2
 sub
 call PlatformManager.platformToLand 5
-pop local 0
-push local 0
+pop local 1
+push local 1
 push constant 256
 eq
 if-goto IF_TRUE0
@@ -329,7 +329,7 @@ return
 label IF_FALSE0
 push this 1
 call Doodle.getDoodleBottom 1
-push local 0
+push local 1
 sub
 push constant 1
 add
@@ -337,21 +337,48 @@ pop this 2
 push constant 0
 not
 return
-function DoodleJump.jump 0
+function DoodleJump.jump 2
 push argument 0
 pop pointer 0
+push this 4
+call PlatformManager.getLandingPlatformIndex 1
+pop local 0
+push local 0
+push constant 1
+neg
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push this 4
+push local 0
+call PlatformManager.getPlatformObjectByIndex 2
+pop local 1
+push local 1
+call Platform.hasSpring 1
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 50
+pop this 2
+goto IF_END1
+label IF_FALSE1
 push constant 15
 pop this 2
+label IF_END1
 push constant 10
 call Sys.wait 1
 pop temp 0
 push constant 0
 return
-function DoodleJump.run 2
+function DoodleJump.run 1
 push argument 0
 pop pointer 0
 push constant 33
-pop local 1
+pop local 0
 label WHILE_EXP0
 push this 1
 call Doodle.getDoodleBottom 1
@@ -375,9 +402,6 @@ if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
 push pointer 0
-call DoodleJump.canLand 1
-pop local 0
-push pointer 0
 call DoodleJump.moveDoodle 1
 pop temp 0
 push this 4
@@ -391,7 +415,8 @@ push this 1
 call Doodle.getDoodleBottom 1
 call PlatformManager.collideAndReconstruct 5
 pop temp 0
-push local 0
+push pointer 0
+call DoodleJump.findLandingPlatform 1
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
@@ -453,9 +478,9 @@ push this 1
 call Doodle.erase 1
 pop temp 0
 push constant 70
-pop local 1
+pop local 0
 label WHILE_EXP1
-push local 1
+push local 0
 push constant 0
 gt
 not
@@ -467,10 +492,10 @@ pop temp 0
 push constant 30
 call Sys.wait 1
 pop temp 0
-push local 1
+push local 0
 push constant 1
 sub
-pop local 1
+pop local 0
 goto WHILE_EXP1
 label WHILE_END1
 push constant 0

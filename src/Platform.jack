@@ -5,6 +5,7 @@ class Platform {
    field boolean collide; // if the platform collide with the doodle
    field boolean needReconstruct;  // if the platform need reconstruct
    field int speed;
+   field boolean spring;
 
    /** Constructs a new square with a given location and size. */
    constructor Platform new(int Ax, int Ay, boolean still) {
@@ -13,6 +14,7 @@ class Platform {
       let needReconstruct = false;
       do draw();
       do initSpeed(still);
+      do setUpSpring();
       return this;
    }
 
@@ -83,7 +85,6 @@ class Platform {
 
    method void reconstruct(boolean collide) {
       if (collide) {
-         do draw();
          do setReconstruct();
          return;
       }
@@ -116,6 +117,19 @@ class Platform {
          let speed = 5;
       }
       return;
+   }
+
+   method void setUpSpring() {
+      if (LCGRandom.randRange(0, 1) = 0) {
+         let spring = true;
+      } else {
+         let spring = false;
+      }
+      return;
+   }
+
+   method boolean hasSpring() {
+      return spring;
    }
 
    method int changeDirection(int nextCoordinate) {
