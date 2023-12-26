@@ -1,10 +1,18 @@
 class EndingScreen {
+    static int bestScore;
+
     function void show(int score) {
+        if (score > bestScore) {
+            let bestScore = score;
+        }
         do EndingScreen.drawBackground();
         do EndingScreen.prompt();
 
         
-        do Output.moveCursor(18, 25);
+        do Output.moveCursor(17, 25);
+        do Output.printString("Best score: ");
+        do Output.printInt(bestScore);
+        do Output.moveCursor(19, 25);
         do Output.printString("Your score: ");
         do Output.printInt(score);
 

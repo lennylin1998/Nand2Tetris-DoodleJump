@@ -261,7 +261,7 @@ function Platform.setUpSpring 0
 push argument 0
 pop pointer 0
 push constant 0
-push constant 1
+push constant 3
 call LCGRandom.randRange 2
 push constant 0
 eq

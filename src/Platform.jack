@@ -120,7 +120,7 @@ class Platform {
    }
 
    method void setUpSpring() {
-      if (LCGRandom.randRange(0, 1) = 0) {
+      if (LCGRandom.randRange(0, 3) = 0) {
          let spring = true;
       } else {
          let spring = false;
