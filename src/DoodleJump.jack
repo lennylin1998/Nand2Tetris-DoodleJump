@@ -23,7 +23,7 @@ class DoodleJump {
       let doodle = Doodle.new(256, 100, 31);
       let platformManager = PlatformManager.new();
 
-      let velocity = -5;
+      let velocity = 0;
       let score = 0;
 
       do separateScreen();
@@ -155,6 +155,8 @@ class DoodleJump {
 
    method void run() {
       var boolean landed;
+      var int clock;
+      let clock = 33;
 
       while (doodle.getDoodleBottom() - velocity < 255) {
          do platformManager.movePlatforms(downVelocity);
@@ -181,7 +183,13 @@ class DoodleJump {
          do Sys.wait(30);
       } // while
       do doodle.erase();
-      do Sys.wait(2000);
+
+      let clock = 70;
+      while (clock > 0) {
+         do platformManager.movePlatforms(downVelocity);
+         do Sys.wait(30);
+         let clock = clock - 1;
+      }
       return;
    }
 

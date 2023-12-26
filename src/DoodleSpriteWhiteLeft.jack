@@ -1,5 +1,5 @@
-class SpriteWhite {
-    function void doodleRight(int x, int y) {
+class DoodleSpriteWhiteLeft {
+    function void draw(int x, int y) {
         do Screen.setColor(false);
         
         do Screen.drawPixel(x+ 29 , y+ 10 );

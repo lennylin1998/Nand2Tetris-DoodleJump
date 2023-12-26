@@ -1,4 +1,4 @@
-function SpriteBlack.doodleRight 0
+function DoodleSpriteBlackLeft.draw 0
 push constant 0
 not
 call Screen.setColor 1

@@ -14,8 +14,7 @@ call Doodle.new 3
 pop this 1
 call PlatformManager.new 0
 pop this 4
-push constant 5
-neg
+push constant 0
 pop this 2
 push constant 0
 pop this 6
@@ -348,9 +347,11 @@ call Sys.wait 1
 pop temp 0
 push constant 0
 return
-function DoodleJump.run 1
+function DoodleJump.run 2
 push argument 0
 pop pointer 0
+push constant 33
+pop local 1
 label WHILE_EXP0
 push this 1
 call Doodle.getDoodleBottom 1
@@ -451,9 +452,27 @@ label WHILE_END0
 push this 1
 call Doodle.erase 1
 pop temp 0
-push constant 2000
+push constant 70
+pop local 1
+label WHILE_EXP1
+push local 1
+push constant 0
+gt
+not
+if-goto WHILE_END1
+push this 4
+push this 5
+call PlatformManager.movePlatforms 2
+pop temp 0
+push constant 30
 call Sys.wait 1
 pop temp 0
+push local 1
+push constant 1
+sub
+pop local 1
+goto WHILE_EXP1
+label WHILE_END1
 push constant 0
 return
 function DoodleJump.getScore 0
