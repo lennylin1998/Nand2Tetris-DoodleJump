@@ -7,7 +7,7 @@ class DoodleJump {
    field int downVelocity;
    field int score;
 
-   /** Constructs a new Doodle Game. */
+   /** Constructs a new Doodle Game. Use a different randomSeed each time a new game start */
    constructor DoodleJump new(int randomSeed) {
       // Set random seed
       do LCGRandom.setSeed(randomSeed);
@@ -38,7 +38,7 @@ class DoodleJump {
       do Screen.setColor(true);
       do Screen.drawRectangle(0, 0, 127, 255);
       do Screen.drawRectangle(384, 0, 511, 255);
-   
+
       do Screen.drawRectangle(0, 12, 511, 13);
       return;
    }
@@ -80,10 +80,15 @@ class DoodleJump {
       if (velocity < 0) {
          do doodle.moveDown(velocity);
       }
+
+      // Decrease velocity
       let velocity = velocity - 1;
-      if (downVelocity < 0) {    // Update the velocity to 0 (make doodle still) AFTER the doodle moves up, when there is downward velocity
+
+      // Update the velocity to 0 (make doodle still) AFTER the doodle moves up, when there is downward velocity
+      if (downVelocity < 0) {
          let velocity = 0;
       }
+
       // Increase right/left speed
       do updateSpeed();
       if (speed > 0) {
@@ -95,6 +100,7 @@ class DoodleJump {
       return;
    }
 
+   // Reach maximum height, initialize down velocity so that doodle will nnot jump out of screen 
    method int initDownVelocity() {
       if (downVelocity = 0) {
          if ((doodle.getDoodleTop() - velocity) < maxHeight) {
@@ -143,7 +149,7 @@ class DoodleJump {
       return true;
    }
 
-   // Jump!!
+   // Identify whether land on a spring, and jump!
    method void jump() {
       var int platformIndex;
       var Platform landingPlatform;
@@ -200,6 +206,7 @@ class DoodleJump {
       return;
    }
 
+   // Show score in the ending screen
    method int getScore() {
       return score;
    }
